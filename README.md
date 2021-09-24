@@ -9,8 +9,6 @@
  - cOrL
 ### Forensics
  - StegosaurusStenops
- - Polymer
- - Art Mystery
  - Luna Guesser
 ### Misc
  - Miner
@@ -24,13 +22,12 @@
 ## Introduction
 
 Alrighty, so this is my first writeup for my first ever CTF competition and I thought I did pretty well!
-  The team as a whole got 11 flags (not including the obligatory Given flag for getting the discord) and I 
+The team as a whole got 11 flags (not including the obligatory Given flag for getting the discord) and I 
 got 6 of those during the time limit. I also went back and got a few flags after time ended just for my own
 research purposes. Thank you for checking out my writeups and I hope you enjoy the presentation!
 
-## Web
+# Web
 
-First off in the web category we have:
 ## ProgrammersHateProgramming
 ### Hint: URL of webpage as well as source code
 
@@ -128,30 +125,164 @@ which got us the flag!
 Flag:
 flag{wow_that_was_a_lot_of_filters_anyways_how_about_that_meaningful_connection_i_mentioned_earlier_:)}
 
-## Welcome to GitHub Pages
+## cOrL
+### Hint: URL
 
-You can use the [editor on GitHub](https://github.com/Reycecar/PBJarCTFWriteups2021/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+In my opinion, this web challenge is really easy. As the name implies, the easiest way to get the flag is by using cURL.
+Upon opening the URL in the challenge, one is faced with a login form looking like this:
+![image](https://user-images.githubusercontent.com/69910524/134600521-a8524d7e-7f79-40dc-b5a0-fe3ed41a3efb.png)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+If we change the request from POST to PUT, and then send the data in the body (like the website hints at) then we can probably get the flag. 
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
 ```
+┌──(kali㉿kali)-[~]
+└─$ curl -X PUT "http://147.182.172.217:42003/index.php" -d "username=admin&password=admin"
+
+<html>
+<head>
+    <title> cOrL </title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://getbootstrap.com/docs/3.3/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<div class="container">
+<div class="jumbotron">
+    <div class="login-form">
+        <form role="form" action="index.php" method="post">
+            <div class="form-group">
+                <input type="text" name="username" id="password" class="form-control input-lg" placeholder="Username">
+                <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
+                <input type="submit" class="btn btn-lg btn-success btn-block" value="Login">
+                <h4 class="text-center" style="color:green">Ah so you must indeed be admin if you put through those protections! The flag is flag{HTTP_r3qu35t_m3th0d5_ftw}</h4>            </div>
+        </form>
+    </div>
+</div>
+</div>
+</html>
+```
+And there we have the flag
+Flag: flag{HTTP_r3qu35t_m3th0d5_ftw}
+
+# Foresics
+## Stegosaurus stenops
+### Hint: This stenops swallowed the flag... and some unusually large rock
+![image](https://user-images.githubusercontent.com/69910524/134601836-21589471-9a0a-4481-b62e-1b2c262e7a85.png)
+This is (obviously) a steganography challenge. The other hint "some unusually large rock" can be attributed to the 
+RockYou.txt wordlist.
+
+First, if you havent unzipped the RockYou.txt wordlist, head to /usr/share/wordlists/RockYou.txt and run 
+```gunzip rockyou.txt.gz```
+
+You will also need to download Stegcracker or Stegseek, for this I chose stegcracker, even though stegseek is FAR faster.
+
+```sudo apt-get install stegcracker```
+
+Next: head back to your directory where you saved stegosaurus.jpg, for me it was downloads (default) Now you want to run
+stegcracker on stegosaurus.jpg with the RockYou.txt wordlist, this is simple:
+```stegcracker stegosaurus.jpg /usr/share/wordlists/rockyou.txt```
+this will get you the flag and store the output in stegosaurus.jpg.out. 
+
+Flag: flag{ungulatus_better_than_stenops}
+
+## Luna Guesser
+### Hint: We intercepted this message being sent from a strange location. Can you figure out where it's being sent from? Note: The flag is the name of a location. All lowercase letters and words separated by underscores. ex: flag{new_york_city}
+
+In this challenge you were given a sound file, LunaGuesser.wav, which if opened was SO annoying. If run through a spectrum analyzer, it seems like it starts with a header before sending more data.
+
+After googling around I found and followed this guide: https://ourcodeworld.com/articles/read/956/how-to-convert-decode-a-slow-scan-television-transmissions-sstv-audio-file-to-images-using-qsstv-in-ubuntu-18-04
+
+This gave the following picture: moon.png
+![image](https://user-images.githubusercontent.com/69910524/134605951-0cda51ed-f12b-400a-8f56-b46b7c2bd9e3.png)
+Since the flag is a location, I figured the flag would be where the moon landing place, after a quick google search we have the flag!
+
+Flag: flag{mare_tranquillitatis}
+
+# Misc
+## Miner
+### Hint: Block #11834380 on the Ethereum Blockchain was mined on Febuary 11th at 9:12:59 AM UTC. What is the address of the miner who validated this block? Flag format: flag{0x0000000000000000000000000000000000000000}
+
+So this one is super easy. All you need to know is how the ETH Blockchain works and tools to use to navigate it. I used Etherscan.
+
+After going to https://etherscan.io/block/11834380 one can clearly see that the miner of this Block was: 0xD224cA0c819e8E97ba0136B3b95ceFf503B79f53 (change the capital letters to lowercase for flag formatting, ETH addresses are not case sensitive.)
+
+Flag: flag{0xd224ca0c819e8e97ba0136b3b95ceff503b79f53}
+
+## MEV
+### The miner of Block #12983883 on the Ethereum Blockchain partakes in the common practice of MEV. What is the exact amount of Ether that was transfered to the miner as a bribe from the transaction that was included first in this block? Info about MEV: https://ethereum.org/en/developers/docs/mev/ Flag format: flag{0.006942069420}
+
+Again use etherscan to solve this problem. Since we know this miner participates in MEV (which one can see after going to https://etherscan.io/block/12983883) basically look at the block reward for the miner that mined it: 
+```2.062115350367643915 Ether (2 + 0.338290779110282795 - 0.27617542874263888)```
+0.338290779110282795 - 0.27617542874263888 = 0.06211535036
+
+Flag: flag{0.06211535036}
+
+# Crypto
+## ReallynotSecureAlgorithm
+### Hint: Here's the obligatory problem!!!
+You're given source code and an output file
+```
+from Crypto.Util.number import *
+with open('flag.txt','rb') as f:
+    flag = f.read().strip()
+e=65537
+p=getPrime(128)
+q=getPrime(128)
+n=p*q
+m=bytes_to_long(flag)
+ct=pow(m,e,n)
+
+
+print (p)
+print (q)
+print (e)
+print (ct)
+```
+```
+194522226411154500868209046072773892801
+288543888189520095825105581859098503663
+65537
+2680665419605434578386620658057993903866911471752759293737529277281335077856
+```
+based on this output we know:
+```
+p = 194522226411154500868209046072773892801
+q = 288543888189520095825105581859098503663
+e = 65537
+ct = 2680665419605434578386620658057993903866911471752759293737529277281335077856
+```
+https://www.dcode.fr/rsa-cipher THANK GOD FOR DCODE!!!
+
+from here its just plug and chug:
+![image](https://user-images.githubusercontent.com/69910524/134607553-b28cd669-f057-4e2d-865c-4965064b6624.png)
+Hit DECRYPT and the flag is given.
+
+Flag: flag{n0t_to0_h4rd_rIt3_19290453}
+
+## Convert
+### Hint: So this is supposed to be the challenge for absolute beginners. For this chall, you will get a hexadecimal number, and have to convert it to text. If you don't know how to do this, Google is your best friend!!!
+
+After unzipping the given file, we get the following: 666c61677b6469735f69735f615f666c346767675f68317d
+
+So now we just _convert_ the Hex values to ascii values. This can easily be done in python:
+
+![image](https://user-images.githubusercontent.com/69910524/134608209-70475fb2-b5b4-474b-a322-b498aea60490.png)
+
+Flag: flag{dis_is_a_fl4ggg_h1}
+
+# Reversing
+## Polymer
+### Hint: I learned in my biology class that a polymer is a chain of monomers that can sometimes form long strings of molecules.
+
+There's a few ways to do this one. One could use Ghidra as a true reverser, or they could do what I did :/
+
+first I tried ```strings polymer | grep flag{ > outs.txt``` but then I realized that the file is filled with a ton of fake flags.
+the fake flags are scattered throughout the file so instead of searching throught hundreds of lines of "flag{n0t_th3_fl4g_l0l}", I just ran ```strings polymer | grep -o -E "flag\{[a-zA-Z0-9_]+\}" | grep -v "flag{n0t_th3_fl4g_l0l}"```
+one could also use sed to substitute the fake flags like so
+```strings polymer | grep -o -E "flag\{[a-zA-Z0-9_]+\}" > out.txt | sed 's/flag{n0t_th3_fl4g_l0l}//g'```
+
+Flag: flag{ju5t_4n0th3r_str1ng5_pr0bl3m_0159394921}
