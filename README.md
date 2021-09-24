@@ -198,7 +198,9 @@ In this challenge you were given a sound file, LunaGuesser.wav, which if opened 
 After googling around I found and followed this guide: https://ourcodeworld.com/articles/read/956/how-to-convert-decode-a-slow-scan-television-transmissions-sstv-audio-file-to-images-using-qsstv-in-ubuntu-18-04
 
 This gave the following picture: moon.png
+
 ![image](https://user-images.githubusercontent.com/69910524/134605951-0cda51ed-f12b-400a-8f56-b46b7c2bd9e3.png)
+
 Since the flag is a location, I figured the flag would be where the moon landing was on the moon, after a quick google search we have the flag!
 
 Flag: flag{mare_tranquillitatis}
@@ -259,7 +261,9 @@ ct = 268066541960543457838662065805799390386691147175275929373752927728133507785
 https://www.dcode.fr/rsa-cipher THANK GOD FOR DCODE!!!
 
 from here its just plug and chug:
+
 ![image](https://user-images.githubusercontent.com/69910524/134607553-b28cd669-f057-4e2d-865c-4965064b6624.png)
+
 Hit DECRYPT and the flag is given.
 
 Flag: flag{n0t_to0_h4rd_rIt3_19290453}
