@@ -1,4 +1,4 @@
-# Welcome to my PBJar CTF Writeups for the 2021 PBJar CTF Competition.
+# Reyce Salisbury's PBJar CTF Writeups for the 2021 PBJar CTF Competition.
 
 ## Table of Contents:
 
