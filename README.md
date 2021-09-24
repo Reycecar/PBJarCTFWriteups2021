@@ -198,7 +198,7 @@ After googling around I found and followed this guide: https://ourcodeworld.com/
 
 This gave the following picture: moon.png
 ![image](https://user-images.githubusercontent.com/69910524/134605951-0cda51ed-f12b-400a-8f56-b46b7c2bd9e3.png)
-Since the flag is a location, I figured the flag would be where the moon landing place, after a quick google search we have the flag!
+Since the flag is a location, I figured the flag would be where the moon landing was on the moon, after a quick google search we have the flag!
 
 Flag: flag{mare_tranquillitatis}
 
@@ -286,3 +286,20 @@ one could also use sed to substitute the fake flags like so
 ```strings polymer | grep -o -E "flag\{[a-zA-Z0-9_]+\}" > out.txt | sed 's/flag{n0t_th3_fl4g_l0l}//g'```
 
 Flag: flag{ju5t_4n0th3r_str1ng5_pr0bl3m_0159394921}
+
+## Web
+### Hint: I downloaded this program back when the version number was still v1. It's been a long time... I heard the most recent update has the flag in it. Download: http://147.182.172.217:42100/v1
+
+Going to this URL gave me a ELF file, which contained a URL http://147.182.172.217:42100/v2, which game me an ELF file which contianed yet another URL http://147.182.172.217:42100/v3. Follwing this pattern, I tried http://147.182.172.217:42100/v99999999
+which had a file that was about 18KB. I took another shot in the dark and tried http://147.182.172.217:42100/v200000000 which returned "version not found".
+
+Now we just have to perform a binary search between 99999999 and 200000000 for the version that the program ends on. 
+```
+n = 99999999
+k = 200000000
+def search():
+    return (1 + k) // 2
+```
+Get the number for the center of a current range by running search() and access the url with the number, if it gives you another "version not found", run k = search(), otherwise run n = search(). Repeat until you have narrowed down the range all the way. This eventually will give you http://147.182.172.217:42100/v133791021. After downloading the file sent by the server, and running strings on it, it gives you the flag.
+
+Flag: flag{h0w_l0ng_wer3_y0u_g0ne_f0r_3910512832}
